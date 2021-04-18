@@ -48,7 +48,7 @@ public class SearchToolbar extends LinearLayout {
 
     Toolbar toolbar = findViewById(R.id.toolbar);
 
-    Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_arrow_left_24);
+    Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_arrow_back_ios_24);
     toolbar.setNavigationIcon(drawable);
     toolbar.setCollapseIcon(drawable);
     toolbar.inflateMenu(R.menu.conversation_list_search);
