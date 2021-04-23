@@ -72,6 +72,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
+import org.thoughtcrime.securesms.MainActivity;
 import org.thoughtcrime.securesms.MainFragment;
 import org.thoughtcrime.securesms.MainNavigator;
 import org.thoughtcrime.securesms.NewConversationActivity;
@@ -147,6 +148,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static org.thoughtcrime.securesms.mediasend.MediaSendActivity.buildGalleryIntent;
 
 
 public class ConversationListFragment extends MainFragment implements ActionMode.Callback,
@@ -160,7 +162,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
 
   private static final String TAG = Log.tag(ConversationListFragment.class);
 
-  private static final int MAXIMUM_PINNED_CONVERSATIONS = 4;
+  private static final int MAXIMUM_PINNED_CONVERSATIONS = 8;
 
   private ActionMode                        actionMode;
   private ConstraintLayout                  constraintLayout;
@@ -171,6 +173,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
   private TextView                          searchEmptyState;
   private PulsingFloatingActionButton       fab;
   private PulsingFloatingActionButton       cameraFab;
+  private PulsingFloatingActionButton       note2self;
   private Stub<SearchToolbar>               searchToolbar;
   private ImageView                         proxyStatus;
   private ImageView                         searchAction;
@@ -210,6 +213,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     list                    = view.findViewById(R.id.list);
     fab                     = view.findViewById(R.id.fab);
     cameraFab               = view.findViewById(R.id.camera_fab);
+    note2self               = view.findViewById(R.id.note_to_self);
     searchEmptyState        = view.findViewById(R.id.search_no_results);
     searchAction            = view.findViewById(R.id.search_action);
     toolbarShadow           = view.findViewById(R.id.conversation_list_toolbar_shadow);
@@ -229,6 +233,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
 
     fab.show();
     cameraFab.show();
+    note2self.show();
 
     list.setLayoutManager(new LinearLayoutManager(requireActivity()));
     list.setItemAnimator(new DeleteItemAnimator());
@@ -249,7 +254,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
                  .onAnyDenied(() -> Toast.makeText(requireContext(), R.string.ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video, Toast.LENGTH_LONG).show())
                  .execute();
     });
-
+    note2self.setOnClickListener(v -> startActivity(new Intent(getActivity(), NewConversationActivity.class)));
     initializeViewModel();
     initializeListAdapters();
     initializeTypingObserver();
@@ -298,6 +303,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
 
     fab.stopPulse();
     cameraFab.stopPulse();
+    note2self.stopPulse();
     EventBus.getDefault().unregister(this);
   }
 
@@ -904,6 +910,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
       emptyState.get().setVisibility(View.VISIBLE);
       fab.startPulse(3 * 1000);
       cameraFab.startPulse(3 * 1000);
+      note2self.startPulse(3 * 1000);
 
       SignalStore.onboarding().setShowNewGroup(true);
       SignalStore.onboarding().setShowInviteFriends(true);
@@ -911,7 +918,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
       list.setVisibility(View.VISIBLE);
       fab.stopPulse();
       cameraFab.stopPulse();
-
+      note2self.stopPulse();
       if (emptyState.resolved()) {
         emptyState.get().setVisibility(View.GONE);
       }

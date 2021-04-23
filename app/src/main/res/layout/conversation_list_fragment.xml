@@ -202,21 +202,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="251dp"
         android:layout_gravity="bottom|end"
-        android:gravity="end"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:gravity="end"
+        android:orientation="vertical"
         app:layout_behavior="org.thoughtcrime.securesms.util.views.SlideUpWithSnackbarBehavior">
 
       <org.thoughtcrime.securesms.components.registration.PulsingFloatingActionButton
           android:id="@+id/camera_fab"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="20dp"
-          android:layout_marginEnd="16dp"
           android:layout_marginTop="8dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginBottom="20dp"
           android:contentDescription="@string/conversation_list_fragment__open_camera_description"
           android:focusable="true"
           android:tint="@color/signal_icon_tint_secondary"
@@ -232,9 +232,19 @@
           android:contentDescription="@string/conversation_list_fragment__fab_content_description"
           android:focusable="true"
           android:tint="@color/core_white"
-          app:srcCompat="@drawable/ic_compose_solid_24"
-          app:backgroundTint="@color/core_ultramarine"/>
-
+          app:backgroundTint="@color/core_ultramarine"
+          app:srcCompat="@drawable/ic_compose_solid_24" />
+      <org.thoughtcrime.securesms.components.registration.PulsingFloatingActionButton
+          android:id="@+id/note_to_self"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="16dp"
+          android:layout_marginBottom="16dp"
+          android:contentDescription="@string/conversation_list_fragment__fab_content_description"
+          android:focusable="true"
+          android:tint="@color/core_white"
+          app:backgroundTint="@color/core_ultramarine"
+          app:srcCompat="@drawable/ic_baseline_note_add_24" />
       <ViewStub
           android:id="@+id/megaphone_container"
           android:layout_width="match_parent"

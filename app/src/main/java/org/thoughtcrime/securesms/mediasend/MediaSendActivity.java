@@ -388,8 +388,6 @@ public class MediaSendActivity extends PassphraseRequiredActivity implements Med
 
   @Override
   public void onFolderSelected(@NonNull MediaFolder folder) {
-    viewModel.onFolderSelected(folder.getBucketId());
-
     MediaPickerItemFragment fragment = MediaPickerItemFragment.newInstance(folder.getBucketId(), folder.getTitle(), viewModel.getMaxSelection());
     getSupportFragmentManager().beginTransaction()
                                .replace(R.id.mediasend_fragment_container, fragment, TAG_ITEM_PICKER)
@@ -781,7 +779,22 @@ public class MediaSendActivity extends PassphraseRequiredActivity implements Med
 
     viewModel.getBucketId().observe(this, bucketId -> {
       if (bucketId == null) return;
-      mediaRailAdapter.setAddButtonListener(() -> onAddMediaClicked(bucketId));
+      mediaRailAdapter.setAddButtonListener((startCamera) -> {
+        onAddMediaClicked(bucketId);
+        if (startCamera) {
+          onCameraSelected();
+        }
+      });
+    });
+
+        viewModel.getBucketId().observe(this, bucketId -> {
+      if (bucketId == null) return;
+      mediaRailAdapter.setAddButtonListener((back) -> {
+        onAddMediaClicked(bucketId);
+        if (back) {
+          onBackPressed();
+        }
+      });
     });
 
     viewModel.getError().observe(this, error -> {
